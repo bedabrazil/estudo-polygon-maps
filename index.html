@@ -1,0 +1,90 @@
+<html> 
+<head> 
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" /> 
+	<title>Google Map V3 Polygon Creator</title>
+	<meta name="keywords" content="polygon,creator,google map,v3,draw,paint">
+	<meta name="description" content="Google Map V3 Polygon Creator">
+	
+	
+	<link rel="stylesheet" type="text/css" href="style.css">
+	
+	
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="polygon.js"></script>
+
+	<script type="text/javascript">
+	$(function(){
+		  //create map
+		 var locations = [[-23.4771295,-46.5537797], [-23.4626508,-46.6951606], [-23.4506956, -46.6835366], [1.453472999999999, 103.7274999999999]];
+		 var paths = [];
+		 for(var i = 0; i < locations.length;i++){
+		 	paths.push([locations[i][0],locations[i][1]]);
+		 } 
+		 
+		 var singapoerCenter = new google.maps.LatLng(-23.5515353,-46.6345861);
+		 var myOptions = {
+		  	zoom: 10,
+		  	center: singapoerCenter,
+		  	mapTypeId: google.maps.MapTypeId.ROADMAP
+		  }
+		 map = new google.maps.Map(document.getElementById('main-map'), myOptions);
+		 
+		 var creator = new PolygonCreator(map, locations);
+		 
+		 //reset
+		 $('#reset').click(function(){ 
+		 		creator.destroy();
+		 		creator=null;
+		 		$('#dataPanel').empty();
+		 		creator = new PolygonCreator(map, locations);
+		 });		 
+		 
+
+		 //show paths
+		 $('#showData').click(function(){ 
+		 		$('#dataPanel').empty();
+		 		if(null==creator.showData()){
+		 			$('#dataPanel').append('Please first create a polygon');
+		 		}else{
+		 			$('#dataPanel').append(creator.showData());
+		 		}
+		 });
+
+		 $('#showLocations').click(function(){ 
+		 		$('#dataPanel').empty();
+		 		if(null == creator.showData()){
+		 			$('#dataPanel').append('Please first create a polygon');
+		 		}else{
+		 			$('#dataPanel').append(creator.showLocations());
+		 		}
+		 });
+		 
+		 //show color
+		 $('#showColor').click(function(){ 
+		 		$('#dataPanel').empty();
+		 		if(null==creator.showData()){
+		 			$('#dataPanel').append('Please first create a polygon');
+		 		}else{
+		 				$('#dataPanel').append(creator.showColor());
+		 		}
+		 });
+	});	
+	</script>
+</head>
+<body>
+
+
+
+	<div id="main-map">
+	</div>
+	<div id="side">
+		<input id="reset" value="Apagar Cerca" type="button" class="btn btn-default"/>
+		<input id="showData"  value="Mostrar Caminhos " type="button" class="btn btn-default"/>
+		<input id="showColor"  value="Mostrar Cores  " type="button" class="btn btn-default"/>
+		<input id="showLocations"  value="Mostrar Locações " type="button" class="btn btn-default"/>		
+		<div   id="dataPanel">
+		</div>
+	</div>
+</body>
+</html>
